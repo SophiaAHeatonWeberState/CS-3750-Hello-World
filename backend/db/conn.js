@@ -1,40 +1,49 @@
-
 const { MongoClient, ServerApiVersion } = require('mongodb');
-require("dotenv").config({ path: "./config.env"});
+require("dotenv").config({ path: "./config.env" });
 const uri = process.env.ATLAS_URI;
 let _db;
 
 module.exports = {
-  connectToServer: function(callback){
-  // Create a MongoClient with a MongoClientOptions object to set the Stable API version
-  const client = new MongoClient(uri, {
-    serverApi: {
-      version: ServerApiVersion.v1,
-      strict: true,
-      deprecationErrors: true,
+  connectToServer: function (callback) {
+    const client = new MongoClient(uri, {
+      serverApi: {
+        version: ServerApiVersion.v1,
+        strict: true,
+        deprecationErrors: true,
+      }
+    });
+
+    async function run() {
+      try {
+        console.log("Attempting to connect to MongoDB...");
+        
+        await client.connect();
+        console.log("MongoDB client connected.");
+
+        await client.db("admin").command({ ping: 1 });
+        console.log("Pinged your deployment. You successfully connected to MongoDB!");
+
+        _db = client.db("employees");
+        console.log("Successful connection to employees collection.");
+
+        callback(null);
+      } catch (err) {
+        console.error("Failed to connect to MongoDB:", err);
+        callback(err);
+      }
     }
-  });
-  
-  async function run() {
-    try {
-      // Connect the client to the server	(optional starting in v4.7)
-      await client.connect();
-      console.log("conn1")
-      // Send a ping to confirm a successful connection
-      await client.db("admin").command({ ping: 1 });
-      console.log("Pinged your deployment. You successfully connected to MongoDB!");
-      _db = client.db("employees");
-      console.log("Successful connection to employees collection.")
-    } finally {
-      // Ensures that the client will close when you finish/error
-      //console.log("Closing the client")
-      //await client.close();
-    }
-  }
-  run().catch(console.dir);
+
+    run().catch(err => {
+      console.error("Error in run():", err);
+      callback(err);
+    });
   },
 
-  getDb: function() {
+  getDb: function () {
+    if (!_db) {
+      console.error("Database not initialized");
+      throw new Error("Database not initialized");
+    }
     return _db;
   }
 };
