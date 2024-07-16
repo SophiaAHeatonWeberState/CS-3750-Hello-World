@@ -13,11 +13,8 @@ const App = () => {
  return (
    <div>
     <h1>Hello World</h1>
-     <Navbar />
      <Routes>
        <Route exact path="/" element={<RecordList />} />
-       <Route path="/edit/:id" element={<Edit />} />
-       <Route path="/create" element={<Create />} />
      </Routes>
    </div>
  );

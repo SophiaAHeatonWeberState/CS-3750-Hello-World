@@ -6,16 +6,6 @@ const Record = (props) => (
    <td>{props.data.name}</td>
    <td>{props.data.position}</td>
    <td>{props.data.level}</td>
-   <td>
-     <Link className="btn btn-link" to={`/edit/${props.data._id}`}>Edit</Link> |
-     <button className="btn btn-link"
-       onClick={() => {
-         props.deleteRecord(props.data._id);
-       }}
-     >
-       Delete
-     </button>
-   </td>
  </tr>
 );
  
@@ -25,7 +15,7 @@ export default function RecordList() {
  // This method fetches the records from the database.
  useEffect(() => {
    async function getRecords() {
-     const response = await fetch(`http://localhost:3000/data/`);
+     const response = await fetch(`http://localhost:5000/data/`);
  
      if (!response.ok) {
        const message = `An error occurred: ${response.statusText}`;
@@ -42,24 +32,15 @@ export default function RecordList() {
    return;
  }, [records.length]);
  
- // This method will delete a record
- async function deleteRecord(id) {
-   await fetch(`http://localhost:5000/${id}`, {
-     method: "DELETE"
-   });
- 
-   const newRecords = records.filter((el) => el._id !== id);
-   setRecords(newRecords);
- }
  
  // This method will map out the records on the table
  function recordList() {
-   return records.map((data) => {
+   return records.map((record) => {
      return (
        <Record
-        data={data}
-         deleteRecord={() => deleteRecord(data._id)}
-         key={data._id}
+         record={record}
+         deleteRecord={() => deleteRecord(record._id)}
+         key={record._id}
        />
      );
    });
