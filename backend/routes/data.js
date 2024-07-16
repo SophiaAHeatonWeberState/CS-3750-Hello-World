@@ -37,3 +37,5 @@ recordRoutes.route("/record").get(async (req, res) => {
         throw err;
     }
 });
+
+module.exports = recordRoutes;
