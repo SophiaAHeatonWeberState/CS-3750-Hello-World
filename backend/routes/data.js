@@ -9,7 +9,7 @@ const dbo = require("../db/conn");
 const ObjectId = require("mongodb").ObjectId;
 
 // This section will create some data.
-recordRoutes.route("/record/add").post(async (req, res) => {
+recordRoutes.route("/data/add").post(async (req, res) => {
     /// console.log(req);
     try {
         let db_connect = dbo.getDb();
@@ -25,7 +25,7 @@ recordRoutes.route("/record/add").post(async (req, res) => {
 });
 
 // This section will get a list of all the records.
-recordRoutes.route("/record").get(async (req, res) => {
+recordRoutes.route("/data").get(async (req, res) => {
     try {
         console.log("In record get route");
         let db_connect = dbo.getDb("employees");
