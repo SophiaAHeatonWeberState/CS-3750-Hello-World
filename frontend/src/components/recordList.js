@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
  
 const Record = (props) => (
  <tr>
-   <td>{props.data.name}</td>
-   <td>{props.data.position}</td>
-   <td>{props.data.level}</td>
+   <td>{props.record.name}</td>
+   <td>{props.record.position}</td>
+   <td>{props.record.level}</td>
  </tr>
 );
  
@@ -15,7 +15,7 @@ export default function RecordList() {
  // This method fetches the records from the database.
  useEffect(() => {
    async function getRecords() {
-     const response = await fetch(`http://localhost:5000/data/`);
+     const response = await fetch(`http://localhost:4000/data/`);
  
      if (!response.ok) {
        const message = `An error occurred: ${response.statusText}`;
@@ -56,7 +56,6 @@ export default function RecordList() {
            <th>Name</th>
            <th>Position</th>
            <th>Level</th>
-           <th>Action</th>
          </tr>
        </thead>
        <tbody>{recordList()}</tbody>
